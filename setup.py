@@ -6,7 +6,7 @@ f.close()
 
 setup(
     name='python-constantcontact',
-    version='0.5.3',
+    version='0.1',
     description='Constant contact lib for python, with stuff for Django too',
     author='Sam Toriel',
     author_email='storiel@gmail.com',
