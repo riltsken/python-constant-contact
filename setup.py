@@ -11,7 +11,7 @@ setup(
     author='Sam Toriel',
     author_email='storiel@gmail.com',
     url='http://github.com/riltsken/python-constantcontact/tree/master',
-    packages=find_packages(),
+    packages=['httplib2','feedparser'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',

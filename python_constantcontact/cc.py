@@ -71,7 +71,7 @@ class Api(object):
 
 		header, xmlbody = self._request(self.collections_url)
 		return fp.parse(xmlbody)
-	
+
 	def get_contact_list(self):
 
 		header, xmlbody = self._request(self.contacts_url)
@@ -85,9 +85,14 @@ class Api(object):
 	# the xml from scratch. Might have to make an xml rebuilder though for other parts of the api.
 
 	def get_contact_by_email(self,email,raw=False):
-	
+
 		xmlstream = self._request('%s?email='.join([self.contacts_url,email.replace('@', '%40').lower()]))
 		treequery = fp.parse(xmlstream[1])
+
+		# if for some reason the email wasn't found, we wont have entries, so throw a 404
+		if not treequery.get('entries'):
+			raise HTTPNotFound(None,fp.parse(xmlstream[1]),None)
+
 		id = treequery['entries'][0]['id'].rsplit('/', 1)[1]
 		if raw:
 			return (id, self._request('%s/%s' % (self.contacts_url,id))[1])
@@ -98,7 +103,7 @@ class Api(object):
 		if raw:
 			return self._request('%s/%s' % (self.contacts_url,id))[1]
 		return fp.parse(self._request('%s/%s' % (self.contacts_url,id))[1])
-		
+
 	def add_contact_to_lists_by_email(self,email,group_ids):
 
 		id, contact = self.get_contact_by_email(email, raw=True)
@@ -109,9 +114,9 @@ class Api(object):
 	def add_contact_to_lists_by_id(self,id,group_ids):
 
 		url = self.contacts_url
-		body = self.contact_lists_template(email,group_ids,first_name,last_name) 
+		body = self.contact_lists_template(email,group_ids,first_name,last_name)
 		return self._request(url=url,method=PUT,body=body)
-		
+
 	def create_contact_template(self,email,group_ids,first_name,last_name):
 
 		contact_groups = ['<ContactList id="http://api.constantcontact.com/ws/customers/%s/lists/%s" />' % (self._username, id) for id in group_ids]
@@ -136,10 +141,10 @@ class Api(object):
 	def create_contact(self,email,group_ids,first_name='',last_name=''):
 
 		url = self.contacts_url
-		body = self.create_contact_template(email,group_ids,first_name,last_name) 
+		body = self.create_contact_template(email,group_ids,first_name,last_name)
 		response, body = self._request(url=url,method=POST,body=body)
 		return (response,body)
-	
+
 	# This removes the contact from all the contact lists, this is not meant to be permanent or for the do-not-mail list
 	def remove_contact_by_email(self,email):
 
@@ -163,12 +168,12 @@ class Api(object):
 			second = contact.split("</ContactLists>")[1]
 			return "".join([first,second])
 		return contact
-		
+
 	def _add_to_contact_lists(self,contact,group_ids=[]):
-		
+
 		contact = "".join([c.lstrip() for c in contact.split('\n')])
 		contact_groups = ['<ContactList id="http://api.constantcontact.com/ws/customers/%s/lists/%s" />' % (self._username, id) for id in group_ids]
-		
+
 		if contact_groups:
 			contact = self._remove_from_contact_lists(contact)
 			if "<ContactLists>" in contact:
@@ -189,7 +194,7 @@ class Api(object):
 				return "".join([first,second,third])
 
 		return contact
-		
+
 	# We can use the same connection for multiple requests
 	# possibility it times out but we'll see.
 	def _request(self,url,method=GET,body=None,headers=None):
@@ -204,9 +209,9 @@ class Api(object):
 
 		check_status_codes(response, response_body, body)
 		return (response, response_body)
-	
+
 	def _establish_connection(self):
 
 		self._connection = httplib2.Http()
 		self._connection.add_credentials(self._login, self._password)
-	
+
