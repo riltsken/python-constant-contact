@@ -1,4 +1,3 @@
-"""
 Note:
 	Feel free to contribute patches for more functionality, the only methods I added were ones I needed for my own project. I also appended a django project to keep track of nightly batch jobs instead of calling the api during normal web processing.
 
@@ -29,5 +28,3 @@ Usage:
 	# should return a 204 UPDATED response status code
 	response, body = api.remove_contact_by_email("joeschmoe123@gmail.com")
 	response, body = api.remove_contact_by_id(id)
-
-"""
