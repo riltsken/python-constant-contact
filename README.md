@@ -1,9 +1,6 @@
 # Overview  
 Python wrapper for constantcontacts developer API.
 
-# Note  
-Feel free to contribute patches for more functionality, the only methods I added were ones I needed for my own project. I also appended a django project to keep track of nightly batch jobs instead of calling the api during normal web processing.
-
 # Usage  
     
     from python_constantcontact import cc
