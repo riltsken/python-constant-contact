@@ -88,6 +88,7 @@ class Api(object):
         self.contacts_url = "%s/contacts" % self.base_url
         self.collections_url = "%s/lists" % self.base_url
         self.folders_url = "%s/library/folders" % self.base_url
+        self.public_url = public_url
 
     def get_collection(self):
 
