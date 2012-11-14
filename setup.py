@@ -1,9 +1,5 @@
 from setuptools import setup, find_packages
 
-f = open('README')
-readme = f.read()
-f.close()
-
 setup(
     name='python-constantcontact',
     version='0.1',
