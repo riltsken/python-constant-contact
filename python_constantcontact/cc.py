@@ -111,7 +111,7 @@ class Api(object):
 
     def get_contact_by_email(self, email, raw=False):
 
-        xmlstream = self._request('%s?email='.join([
+        xmlstream = self._request('?email='.join([
             self.contacts_url, email.replace('@', '%40').lower()]))
         treequery = fp.parse(xmlstream[1])
 
