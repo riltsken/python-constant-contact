@@ -7,7 +7,7 @@ import httplib
 import httplib2
 
 #open source lib http://code.google.com/p/feedparser/
-#used for parsing the xml and returning it in a usuable format
+#used for parsing the xml and returning it in a usable format
 import feedparser as fp
 
 constantcontact_url = "https://api.constantcontact.com/ws/customers"
